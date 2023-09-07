@@ -15,7 +15,7 @@ class StationController extends Controller
 
     public function get(Request $request, $marketId) {
         
-        $station = Station::where('marketId', $marketId);
+        $station = Station::where('marketId', $marketId)->exists();
         if(!empty($station)) {
             return response()->json($station);
         } else {
