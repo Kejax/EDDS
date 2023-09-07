@@ -17,12 +17,12 @@ class StationController extends Controller
         
         $station = Station::where('marketId', $marketId);
         if(!empty($station)) {
-            return response()->json($station, 200);
+            return response(200)->json($station);
         } else {
-            return response()->json([
+            return response(404)->json([
                 "error" => 404,
                 "message" => "Station not found"
-            ], 404);
+            ]);
         }
 
     }
@@ -31,9 +31,9 @@ class StationController extends Controller
 
         $station = Station::find($query); // TODO Change for finding several query fitting stations
         if(!empty($station)) {
-            return response()->json([
+            return response(404)->json([
                 $station
-            ], 200);                                                        
+            ]);                                                        
         }
 
     }
