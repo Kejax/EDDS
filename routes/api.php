@@ -22,4 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/stations/', [StationController::class, 'index']);
 
+Route::get('/stations/search', [StationController::class, 'search']);
+
 Route::get('/station/{id}',[StationController::class, 'get']);
+
+//Route::post('/station/{id')

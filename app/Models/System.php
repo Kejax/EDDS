@@ -22,7 +22,12 @@ class System extends Model
         'systemGovernment',
         'systemSecurity',
         'population',
-        'factions'
+        'factions',
+        'marketIds'
+    ];
+
+    protected $casts = [
+        'marketIds' => 'array'
     ];
 
 }

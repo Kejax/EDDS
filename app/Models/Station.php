@@ -23,10 +23,12 @@ class Station extends Model
         'stationPopulation',
         'stationGovernment',
         'stationAllegiance',
-        'minorFaction'
+        'minorFaction',
+        'commodity'
     ];
 
     protected $casts = [
         'stationServices' => 'array',
+        'commodity' => 'array'
     ];
 }
