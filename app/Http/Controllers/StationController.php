@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commodity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 use App\Models\Station;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class StationController extends Controller
 {
@@ -15,8 +17,8 @@ class StationController extends Controller
     }
 
     public function get(Request $request, $marketId) {
-        
-        $station = Station::where('marketId', $marketId);
+
+        $station = Station::where('market_id', $marketId);
         if($station->exists()) {
             return response()->json($station->get()[0], 200);
         } else {
@@ -32,7 +34,7 @@ class StationController extends Controller
 
         $systemAddress = $request->input('systemAddress');
         $name = $request->input('name');
-        
+
         $systemDistance = $request->input('systemDistance');
         $centerSystem = $request->input('centerSystem');
 
@@ -75,15 +77,15 @@ class StationController extends Controller
                 /*$stationQuery->whereRaw(''); /* TODO Check EDSM.NET for a suitable api endpoint that can return systems
                 in range of another system */
 
-                // Get the nearest systems to the currentLocation or 
+                // Get the nearest systems to the currentLocation or
                 $bubbleJson = Http::get("https://www.edsm.net/api-v1/sphere-systems?systemId64=$centerSystem&radius=$distance&showId=1");
 
 
-                $stationQuery = $stationQuery->where(function (Builder $query) {
+                /*$stationQuery = $stationQuery->where(function (Builder $query) {
                     foreach($bubbleJson as $bubbleSystem) {
                         $query = $query->orWhere('systemAddress', $bubbleSystem['id64']);
                     }
-                });
+                });*/
 
             }
 
@@ -92,7 +94,7 @@ class StationController extends Controller
         if(!empty($station)) {
             return response()->json([
                 $station
-            ]);                                                        
+            ]);
         }
 
     }
@@ -103,29 +105,50 @@ class StationController extends Controller
 
     public function updateCommodity(Request $request, $marketId) {
 
-        $station = Station::where('marketId', $marketId);
+        $station = Station::where('market_id', $marketId);
 
 
         $validated = $request->validate([
-            "commodity.*.buyPrice" => 'required|int',
-            "commodity.*.sellPrice" => 'required|int',
+            "commodity.*.buy_price" => 'required|int',
+            "commodity.*.sell_price" => 'required|int',
             "commodity.*.demand" => 'required|int',
             "commodity.*.stock" => 'required|int',
-            "commodity.*.name" => 'required|int'
+            "commodity.*.name" => 'required|string',
         ]);
 
         if($station->exists()) {
             $station = $station->first();
-            $station->commodity = $validated['commodity'];
             $station->save();
 
-            response()->json([
-                "message" => "update successfull",
+            $toReturn = array();
+
+            foreach ($validated['commodity'] as $commodity) {
+                $station_commodity = $station->commodities()->where('name', $commodity['name'])->first();
+                if ($station_commodity == null) {
+                    $station_commodity = new Commodity();
+                    $station_commodity->name = $commodity['name'];
+                    $station_commodity->buy_price = $commodity['buy_price'];
+                    $station_commodity->sell_price = $commodity['sell_price'];
+                    $station_commodity->demand = $commodity['demand'];
+                    $station_commodity->stock = $commodity['stock'];
+                    $station->commodities()->save($station_commodity);
+                } else {
+                    $station_commodity->buy_price = $commodity['buy_price'];
+                    $station_commodity->sell_price = $commodity['sell_price'];
+                    $station_commodity->demand = $commodity['demand'];
+                    $station_commodity->stock = $commodity['stock'];
+                    $station_commodity->save();
+                }
+                array_push($toReturn, $station_commodity);
+            }
+
+            return response()->json([
+                "message" => "Updating commodities was successfull",
                 "code" => 200,
-                "data" => json_encode($station->commodity)
+                "data" => $toReturn
             ], 200);
         } else {
-            response()->json([
+            return response()->json([
                 "error" => 404,
                 "message" => "No station matching this market ID"
             ], 404);

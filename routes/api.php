@@ -26,4 +26,4 @@ Route::get('/stations/search', [StationController::class, 'search']);
 
 Route::get('/station/{id}',[StationController::class, 'get']);
 
-//Route::post('/station/{id')
+Route::post('/station/{id}/commodity', [StationController::class, 'updateCommodity']);

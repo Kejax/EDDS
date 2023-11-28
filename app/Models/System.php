@@ -23,11 +23,14 @@ class System extends Model
         'systemSecurity',
         'population',
         'factions',
-        'marketIds'
     ];
 
     protected $casts = [
-        'marketIds' => 'array'
+
     ];
+
+    public function arrivalBody() {
+        return $this->hasOne(Body::class, 'body_id', 'arrival_body_id')->where('systemAddress', $this->systemAddress);
+    }
 
 }

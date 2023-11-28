@@ -12,12 +12,12 @@ class SystemController extends Controller
 
     public function update(Request $request, $systemAddress) {
 
-        $system = Station::firstOrCreate([
+        $system = System::firstOrCreate([
             'systemAddress' => $systemAddress
         ]);
 
         $system->name = $request->name;
-        
+
         $system->systemAddress = $request->systemAddress;
         $system->starPositionX = $request->starPositionX;
         $system->starPositionY = $request->starPositionY;

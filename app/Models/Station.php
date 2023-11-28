@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Station extends Model
 {
@@ -11,7 +12,7 @@ class Station extends Model
     protected $table = 'stations';
     protected $fillable = [
         'name',
-        'marketId',
+        'market_id',
         'systemAdress',
         'distanceFromStar',
         'landingPlatformSize',
@@ -24,11 +25,13 @@ class Station extends Model
         'stationGovernment',
         'stationAllegiance',
         'minorFaction',
-        'commodity'
     ];
 
     protected $casts = [
         'stationServices' => 'array',
-        'commodity' => 'array'
     ];
+
+    public function commodities(): HasMany {
+        return $this->hasMany(Commodity::class, 'market_id', 'market_id');
+    }
 }
