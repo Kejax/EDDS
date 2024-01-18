@@ -1,3 +1,3 @@
-## ED Tracker Backend
+## Elite Dangerous Data Service (EDDS)
 
-This is the repo of the backend for the [ED Squadrone Tracker](https://github.com/Kejax/ED-Squadrone-Tracker)
+EDDS is an open source project that aims to provide accurate data about the Elite Dangerous galaxy and comes with an easy to use and fully documented API or developers.
