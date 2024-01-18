@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('stations', function (Blueprint $table) {
-            $table->renameColumn('marketId', 'market_id');
+        Schema::create('squadrone_members', function (Blueprint $table) {
+            $table->foreignId('id')->references('id')->on('users');
+            $table->foreignId('squadrone_id')->references('id')->on('squadrones');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('stations', function (Blueprint $table) {
-            $table->renameColumn('market_id', 'marketId');
-        });
+        Schema::dropIfExists('squadrone_members');
     }
 };

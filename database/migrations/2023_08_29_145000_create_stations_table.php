@@ -11,29 +11,34 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /*Schema::create('stations', function (Blueprint $table) {
-            $table->id();
+        Schema::create('stations', function (Blueprint $table) {
+            $table->unsignedBigInteger('market_id')->primary();
             $table->string('name');
-            $table->string('marketId')->change();
-            $table->integer('systemAdress'); // TODO
-            $table->integer('distanceFromStar');
-            $table->string('landingPlatformSize');
-            $table->string('stationType');
-            $table->string('stationState');
-            $table->json('stationServices');
-            $table->string('stationEconomy');
-            $table->string('stationWealth');
-            $table->string('stationPopulation');
-            $table->string('stationGovernment');
-            $table->string('stationAllegiance');
-            $table->string('minorFaction');
-            //$table->timestamp('stationUpdated');
-            //$table->timestamp('locationUpdated');
-            //$table->timestamp('marketUpdated');
-            //$table->timestamp('shipyardUpdated');
-            //$table->timestamp('outfittingUpdated');
+            $table->integer('system_address'); // TODO add relationship in Model
+            $table->float('distance_from_star');
+            $table->enum('landing_platform_size', [
+                'Small',
+                'Medium',
+                'Large'
+            ]); //
+            $table->enum('station_type', [
+                'Asteroid',
+                'Coriolis',
+                'CraterOutpost',
+                'CraterPort',
+                'FleetCarrier',
+                'MegaShip',
+                'Ocellus',
+                'Orbis',
+                'Outpost',
+                'Settlement'
+            ]);
+            //$table->json('station_services'); TODO Make this to a seperate Model with table
+            $table->json('station_economies');
+            $table->string('station_government'); // TODO Make this to an enum of type GovernmentType
+            $table->string('station_faction');
             $table->timestamps();
-        });*/
+        });
     }
 
     /**

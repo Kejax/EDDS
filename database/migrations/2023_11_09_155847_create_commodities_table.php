@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('commodities', function (Blueprint $table) {
+        Schema::create('commodities', function (Blueprint $table) {
             $table->id();
-            $table->renameColumn('marketId', 'market_id')->after('id');
+            $table->unsignedBigInteger('market_id');
             $table->string('name');
             $table->integer('sell_price');
             $table->integer('buy_price');
             $table->integer('demand');
             $table->integer('stock');
-            $table->integer('mean_price')->nullable();
             $table->unique(['market_id', 'name'], 'unique_index');
             $table->timestamps();
-
-            $table->removeColumn('commodities');
         });
     }
 

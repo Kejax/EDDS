@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::table('stations', function (Blueprint $table) {
-        //     $table->string('marketId');
-        // });
+        Schema::create('squadrones', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('icon');
+            $table->string('profile_image');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -21,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('squadrones');
     }
 };

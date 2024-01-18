@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Squadrones;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 /**
@@ -24,7 +25,7 @@ use Illuminate\Http\Request;
      *     description="API Endpoints of Projects"
      * )
     */
-class FactionController extends Controller
+class AcceptionHandler extends Controller
 {
     //
 }
