@@ -12,19 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('systems', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('system_address')->primary();
             $table->string('name');
-            $table->integer('systemAdress');
-            $table->float('starPositionX');
-            $table->float('starPositionY');
-            $table->float('starPositionZ');
-            $table->string('systemAllegiance');
-            $table->string('systemEconomy');
-            $table->string('systemSecondEconomy');
-            $table->string('systemGovernment');
-            $table->string('systemSecurity');
+            $table->float('star_position_x', 10, 2);
+            $table->float('star_position_y', 10, 2);
+            $table->float('star_position_z', 10, 2);
+            $table->integer('arrival_body_id');
+            $table->string('system_economy');
+            $table->string('system_second_economy');
+            $table->string('system_government');
+            $table->string('system_security');
             $table->string('population');
-            $table->string('factions');
+            $table->unsignedBigInteger('system_faction_id');
+            //$table->string('factions'); TODO Make a faction model with relations
             $table->timestamps();
         });
     }

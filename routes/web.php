@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Squadrones\SquadroneHandler;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
+})->name('home');
+
+Route::group([
+    'alias' => 'squadrones'
+], function () {
+
+    Route::get('/squadrones/{squadrone_id}', [SquadroneHandler::class, 'index']);
+
+    Route::post('/squadrones/create', [SquadroneHandler::class, 'create']);
+
+    Route::any('/squadrones/{squadrone_id}/edit', [SquadroneHandler::class, 'edit']);
+
 });
