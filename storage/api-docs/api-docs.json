@@ -1,0 +1,679 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Kejax's EDDB API Documentation",
+        "description": "Documentation for all publicly available API endpoints.<br><br>Content provided by the API may be outdated when no update was sent to the EDDN or from a trusted provider.<br>To become a trusted provider, please apply <a href='/trusted/apply'>here</a><br><br>All endpoints should return an http error code and a human readable message when issues occur. ",
+        "contact": {
+            "email": "ed-api@kejax.net"
+        },
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/api/stations": {
+            "get": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Returns all stored stations in a paginated view",
+                "operationId": "169c0910e38928ff56efb1027ff472fe",
+                "parameters": [
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "The cursor that was returned in the last request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "The number of stations per page. Maximum is 100. Defaults to 25",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Station"
+                                            }
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "next_cursor": {
+                                            "type": "string"
+                                        },
+                                        "next_page_url": {
+                                            "type": "string"
+                                        },
+                                        "prev_cursor": {
+                                            "type": "string"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/stations/search": {
+            "get": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Searches for stations that meet the query",
+                "operationId": "47c465aebf3bc33dfa58c130226b3fb7",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the station"
+                    },
+                    {
+                        "name": "radius",
+                        "in": "query",
+                        "description": "Allowed radius around {system_address}"
+                    },
+                    {
+                        "name": "system_address",
+                        "in": "query",
+                        "description": "Searches for stations in the system and functions as center if {radius} is given. Required if {radius} is given"
+                    },
+                    {
+                        "name": "faction",
+                        "in": "query",
+                        "description": "The faction name"
+                    },
+                    {
+                        "name": "government",
+                        "in": "query",
+                        "description": "Stations with the corresponding government type",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Station"
+                                            }
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "next_cursor": {
+                                            "type": "string"
+                                        },
+                                        "next_page_url": {
+                                            "type": "string"
+                                        },
+                                        "prev_cursor": {
+                                            "type": "string"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/station/{market_id}": {
+            "get": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Returns all stored information about the station",
+                "operationId": "6ac32b009aec28f240f029cf7530168b",
+                "parameters": [
+                    {
+                        "name": "market_id",
+                        "in": "path",
+                        "description": "The market ID of the station",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Station"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Updates a station",
+                "description": "Updates the station data. Requires an API-Key that is only available for trusted providers",
+                "operationId": "393a0712be5fb317c6d48002e543e1ce",
+                "parameters": [
+                    {
+                        "name": "market_id",
+                        "in": "path",
+                        "description": "The market Id of the >i< station",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Station"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns the updated station",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Station"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/station/{market_id}/commodity": {
+            "get": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Returns the commodity data for the specified station",
+                "operationId": "3873f6b0f1c4bc9ccad65b0abe566c0f",
+                "parameters": [
+                    {
+                        "name": "market_id",
+                        "in": "path",
+                        "description": "The market ID of the station",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Commodity"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Station not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No station matching this market ID"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Updates the commodity data for the specified station",
+                "description": "Updates the commodity data for the specified station. Requires an API-Key that is only available for trusted providers",
+                "operationId": "72abe65a86f23dae1af116aada96db8e",
+                "parameters": [
+                    {
+                        "name": "market_id",
+                        "in": "path",
+                        "description": "The market ID of the station",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Commodity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Commodity"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Station not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No station matching this market ID"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/system/{system_id}": {
+            "post": {
+                "tags": [
+                    "Systems"
+                ],
+                "summary": "Updates data of a certain system",
+                "operationId": "e8668237ccac7d25f685486c34c3d1bb",
+                "parameters": [
+                    {
+                        "name": "system_id",
+                        "in": "path",
+                        "description": "The system Id64 for the system",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Commodity": {
+                "title": "Commodity",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "iron"
+                    },
+                    "sell_price": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "buy_price": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "demand": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "stock": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2023-12-23T00:27:45.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "2023-12-23T00:27:45.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "BodyType": {
+                "title": "BodyType",
+                "type": "string",
+                "enum": [
+                    "O_BLUE_WHITE_STAR",
+                    "B_BLUE_WHITE_STAR",
+                    "B_BLUE_WHITE_SUPER_GIANT_STAR",
+                    "A_BLUE_WHITE_STAR",
+                    "A_BLUE_WHITE_SUPER_GIANT_STAR",
+                    "F_WHITE_STAR",
+                    "F_WHITE_SUPER_GIANT_STAR",
+                    "G_WHITE_YELLOW_STAR",
+                    "G_WHITE_YELLOW_SUPER_GIANT_STAR",
+                    "K_YELLOW_ORANGE_STAR",
+                    "K_YELLOW_ORANGE_GIANT_STAR",
+                    "M_RED_DWARF_STAR",
+                    "M_RED_DWARF_GIANT_STAR",
+                    "M_RED_DWARF_SUPER_GIANT_STAR",
+                    "L_BROWN_DWARF_STAR",
+                    "T_BROWN_DWARF_STAR",
+                    "Y_BROWN_DWARF_STAR",
+                    "T_TAURI_STAR",
+                    "AE_AB_STAR",
+                    "W_STAR",
+                    "WN_STAR",
+                    "WNC_STAR",
+                    "WC_STAR",
+                    "WO_STAR",
+                    "CS_STAR",
+                    "C_STAR",
+                    "CN_STAR",
+                    "CJ_STAR",
+                    "CH_STAR",
+                    "CHD_STAR",
+                    "MS_STAR",
+                    "S_STAR",
+                    "D_WHITE_DWARF_STAR",
+                    "DA_WHITE_DWARF_STAR",
+                    "DAB_WHITE_DWARF_STAR",
+                    "DAO_WHITE_DWARF_STAR",
+                    "DAZ_WHITE_DWARF_STAR",
+                    "DAV_WHITE_DWARF_STAR",
+                    "DB_WHITE_DWARF_STAR",
+                    "DBZ_WHITE_DWARF_STAR",
+                    "DBV_WHITE_DWARF_STAR",
+                    "DO_WHITE_DWARF_STAR",
+                    "DOV_WHITE_DWARF_STAR",
+                    "DQ_WHITE_DWARF_STAR",
+                    "DC_WHITE_DWARF_STAR",
+                    "DCV_WHITE_DWARF_STAR",
+                    "DX_WHITE_DWARF_STAR",
+                    "NEUTRON_STAR",
+                    "BLACK_HOLE",
+                    "X_EXOTIC_STAR",
+                    "SUPER_MASSIVE_BLACKHOLE",
+                    "ROGUE_PLANET",
+                    "NEBULA",
+                    "STELLAR_REMNANT_NEBULAR",
+                    "METAL_RICH_BODY",
+                    "HIGH_METAL_CONTENT_BODY",
+                    "ROCKY_BODY",
+                    "ICY_BODY",
+                    "ROCKY_ICY_BODY",
+                    "EARTHLIKE_BODY",
+                    "WATER_WORLD",
+                    "AMMONIA_WORLD",
+                    "WATER_GIANT",
+                    "WATER_GIANT_WITH_LIFE",
+                    "GAS_GIANT_WITH_WATER_BASED_LIFE",
+                    "GAS_GIANT_WITH_AMMONIA_BASED_LIFE",
+                    "SUDARSKY_CLASS_I_GAS_GIANT",
+                    "SUDARSKY_CLASS_II_GAS_GIANT",
+                    "SUDARSKY_CLASS_III_GAS_GIANT",
+                    "SUDARSKY_CLASS_IV_GAS_GIANT",
+                    "SUDARSKY_CLASS_V_GAS_GIANT",
+                    "HELIUM_RICH_GAS_GIANT",
+                    "HELIUM_GAS_GIANT"
+                ]
+            },
+            "EconomyType": {
+                "title": "EconomyType",
+                "type": "string",
+                "enum": [
+                    "EXTRACTION",
+                    "REFINERY",
+                    "INDUSTRIAL",
+                    "HIGH_TECH",
+                    "AGRICULTURE",
+                    "TERRAFORMING",
+                    "TOURISM",
+                    "SERVICE",
+                    "MILITARY",
+                    "COLONY",
+                    "RESCUE",
+                    "DAMAGED",
+                    "REPAIR",
+                    "PRIVATE_ENTERPRISE"
+                ]
+            },
+            "GovernmentType": {
+                "title": "GovernmentType",
+                "type": "string",
+                "enum": [
+                    "ANARCHY",
+                    "COMMUNIST",
+                    "CONFEDERACY",
+                    "COOPERATIVE",
+                    "CORPORATE",
+                    "DEMOCRACY",
+                    "DICTATORSHIP",
+                    "FEUDAL",
+                    "PATRONAGE",
+                    "PRISION_COLONY",
+                    "THEOCRACY",
+                    "ENGINEER",
+                    "NONE",
+                    "PRISON",
+                    "PRIVATE_OWNERSHIP"
+                ]
+            },
+            "LandingPlatformSize": {
+                "title": "LandingPlatformSize",
+                "type": "string",
+                "enum": [
+                    "SMALL",
+                    "MEDIUM",
+                    "LARGE"
+                ]
+            },
+            "SecurityLevel": {
+                "title": "SecurityLevel",
+                "description": "The security level of systems",
+                "type": "string",
+                "enum": [
+                    "LOW",
+                    "MEDIUM",
+                    "HIGH",
+                    "ANARCHY",
+                    "LAWLESS"
+                ]
+            },
+            "StationType": {
+                "title": "StationType",
+                "description": "Be aware that the API accepts 'BERNAL' as an alias to 'ORBIS', but always returns 'ORBIS'",
+                "type": "string",
+                "enum": [
+                    "ASTEROID",
+                    "BERNAL",
+                    "CORIOLIS",
+                    "CRATER_OUTPOST",
+                    "CRATER_PORT",
+                    "FLEET_CARRIER",
+                    "MEGA_SHIP",
+                    "OCELLUS",
+                    "ORBIS",
+                    "OUTPOST",
+                    "SETTLEMENT"
+                ]
+            },
+            "Station": {
+                "title": "Station",
+                "properties": {
+                    "market_id": {
+                        "type": "integer",
+                        "example": 3929121280
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Baibuza Engineering Silo"
+                    },
+                    "system_address": {
+                        "type": "integer",
+                        "example": 2869441275257
+                    },
+                    "distance_from_star": {
+                        "type": "number",
+                        "example": 231
+                    },
+                    "landing_platform_size": {
+                        "$ref": "#/components/schemas/LandingPlatformSize"
+                    },
+                    "station_type": {
+                        "enum": [
+                            "ASTEROID",
+                            "BERNAL",
+                            "CORIOLIS",
+                            "CRATER_OUTPOST",
+                            "CRATER_PORT",
+                            "FLEET_CARRIER",
+                            "MEGA_SHIP",
+                            "OCELLUS",
+                            "ORBIS",
+                            "OUTPOST",
+                            "SETTLEMENT"
+                        ],
+                        "example": "SETTLEMENT"
+                    },
+                    "station_economies": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "name": {
+                                    "$ref": "#/components/schemas/EconomyType"
+                                },
+                                "proportion": {
+                                    "type": "number",
+                                    "example": 0.7
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "station_government": {
+                        "$ref": "#/components/schemas/GovernmentType"
+                    },
+                    "station_faction": {
+                        "type": "string",
+                        "example": "Faction"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2023-12-23T00:27:45.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "2023-12-23T00:27:45.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "System": {
+                "title": "System",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Sol"
+                    },
+                    "system_address": {
+                        "description": "The systems Id64",
+                        "type": "number",
+                        "example": 99999999999
+                    },
+                    "star_position_x": {
+                        "type": "number",
+                        "example": 0
+                    },
+                    "star_position_y": {
+                        "type": "number",
+                        "example": 0
+                    },
+                    "star_position_z": {
+                        "type": "number",
+                        "example": 0
+                    },
+                    "arrival_body_id": {
+                        "type": "number",
+                        "example": 0
+                    },
+                    "system_economy": {
+                        "$ref": "#/components/schemas/EconomyType"
+                    },
+                    "system_second_economy": {
+                        "$ref": "#/components/schemas/EconomyType"
+                    },
+                    "system_government": {
+                        "$ref": "#/components/schemas/GovernmentType"
+                    },
+                    "system_security": {
+                        "$ref": "#/components/schemas/SecurityLevel"
+                    },
+                    "population": {
+                        "type": "number",
+                        "example": 1000
+                    },
+                    "system_faction_id": {
+                        "description": "the internal id of the controlling faction",
+                        "type": "number",
+                        "example": 0
+                    },
+                    "system_faction_name": {
+                        "description": "The name of the controlling faction",
+                        "type": "number",
+                        "example": 0
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

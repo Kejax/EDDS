@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::table('stations', function (Blueprint $table) {
-        //     $table->renameColumn('systemAdresse', 'systemAdress');
-        // });
+        Schema::create('squadrone_invitations', function (Blueprint $table) {
+            $table->id();
+            $table->string('code', 16);
+            $table->timestamp('expiration');
+            $table->unsignedInteger('limit');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -21,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('squadrone_invitations');
     }
 };
