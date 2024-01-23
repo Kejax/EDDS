@@ -42,7 +42,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(
             property: 'station_type',
             enum: StationType::class,
-            example: StationType::Settlement
+            example: StationType::SETTLEMENT
         ),
         new OA\Property(
         property: 'station_economies',
@@ -81,14 +81,14 @@ use OpenApi\Attributes as OA;
             type: 'string',
             example: '2023-12-23T00:27:45.000000Z'
         ),
-        new OA\Property(
+        /*new OA\Property(
             property: 'commodity',
             type: 'array',
             description: 'Only available on certain endpoints',
             items: new OA\Items(
                 ref: '#/components/schemas/Commodity'
             )
-        ),
+        ),*/
 
     ]
 )]
@@ -99,6 +99,8 @@ class Station extends Model
     protected $table = 'stations';
 
     protected $primaryKey = 'market_id';
+
+    public $incrementing = false;
 
     protected $fillable = [
         'market_id',
@@ -117,10 +119,15 @@ class Station extends Model
     ];
 
     protected $with = [
-        'commodity'
+        //'commodity'
     ];
 
     public function commodity(): HasMany {
         return $this->hasMany(Commodity::class, 'market_id', 'market_id');
     }
+
+    public function system() {
+        return $this->belongsTo(System::class, 'system_address', 'system_address');
+    }
+
 }

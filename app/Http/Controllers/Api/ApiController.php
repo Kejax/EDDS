@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
      * @OA\Info(
      *      version="0.0.1",
      *      title="Kejax's EDDB API Documentation",
-     *      description="Documentation for all publicly available API endpoints.<br>Content provided by the API may be outdated when no update was sent to the EDDN or from a trusted provider.<br>To become a trusted provider, please apply <a href='/trusted/apply'>here</a>",
+     *      description="Documentation for all publicly available API endpoints.<br><br>Content provided by the API may be outdated when no update was sent to the EDDN or from a trusted provider.<br>To become a trusted provider, please apply <a href='/trusted/apply'>here</a><br><br>All endpoints should return an http error code and a human readable message when issues occur. ",
      *      @OA\Contact(
      *          email="ed-api@kejax.net"
      *      ),

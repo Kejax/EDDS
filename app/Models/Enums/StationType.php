@@ -2,20 +2,39 @@
 
 namespace App\Models\Enums;
 
-// TODO Swagger Docs
-enum StationType:String {
+use OpenApi\Attributes as OA;
 
-    case ASTEROID = 'Asteroid';
-    case BERNAL = 'Bernal'; // Bernal == Orbis
-    case CORIOLIS = 'Coriolis';
-    case CRATER_OUTPOST = 'CraterOutpost';
-    case CRATER_PORT = 'CraterPort';
-    case FLEET_CARRIER = 'FleetCarrier';
-    case MEGA_SHIP = 'MegaShip';
-    case OCELLUS = 'Ocellus';
-    case ORBIS = 'Orbis'; // Orbis == Bernal
-    case OUTPOST = 'Outpost';
-    case SETTLEMENT = 'Settlement';
+#[OA\Schema(
+    title: 'StationType',
+    description: 'Be aware that the API accepts \'BERNAL\' as an alias to \'ORBIS\', but always returns \'ORBIS\'',
+    type: 'string',
+    enum: [
+        'ASTEROID',
+        'BERNAL',
+        'CORIOLIS',
+        'CRATER_OUTPOST',
+        'CRATER_PORT',
+        'FLEET_CARRIER',
+        'MEGA_SHIP',
+        'OCELLUS',
+        'ORBIS',
+        'OUTPOST',
+        'SETTLEMENT'
+    ]
+)]
+enum StationType: String {
+
+    case ASTEROID = 'ASTEROID';
+    case BERNAL = 'BERNAL'; // Bernal == Orbis
+    case CORIOLIS = 'CORIOLIS';
+    case CRATER_OUTPOST = 'CRATER_OUTPOST';
+    case CRATER_PORT = 'CRATER_PORT';
+    case FLEET_CARRIER = 'FLEET_CARRIER';
+    case MEGA_SHIP = 'MEGA_SHIP';
+    case OCELLUS = 'OCELLUS';
+    case ORBIS = 'ORBIS'; // Orbis == Bernal
+    case OUTPOST = 'OUTPOST';
+    case SETTLEMENT = 'SETTLEMENT';
 
 }
 

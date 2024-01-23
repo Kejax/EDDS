@@ -22,6 +22,7 @@ class SystemController extends Controller
             new OA\Parameter(
                 name: 'system_id',
                 in: 'path',
+                required: true,
                 description: 'The system Id64 for the system'
             )
         ],
@@ -35,7 +36,7 @@ class SystemController extends Controller
     )]
     public function update(Request $request, $systemAddress) {
 
-        // TODO Rewrite Station update controller
+        // TODO Rewrite System update controller
         // TODO Swagger Docs (Finish)
 
         $validated_data = $request->validate([
@@ -85,5 +86,11 @@ class SystemController extends Controller
         ]);
 
     }
+
+    // TODO index
+    // TODO search
+    // TODO get
+    // TODO factions
+    // TODO Swagger Docs
 
 }

@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('systems', function (Blueprint $table) {
-            $table->unsignedBigInteger('system_adress')->primary();
+            $table->unsignedBigInteger('system_address')->primary();
             $table->string('name');
             $table->float('star_position_x', 10, 2);
             $table->float('star_position_y', 10, 2);
             $table->float('star_position_z', 10, 2);
+            $table->integer('arrival_body_id');
             $table->string('system_economy');
             $table->string('system_second_economy');
             $table->string('system_government');

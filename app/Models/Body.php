@@ -12,11 +12,12 @@ class Body extends Model
     protected $table = 'bodies';
 
     protected $fillable = [
-        'systemAddress',
-        'body_id'
+        'system_address',
+        'body_id',
+        'parent_id',
     ];
 
     public function system() {
-        return $this->belongsTo(System::class, 'systemAddress', 'systemAddress');
+        return $this->belongsTo(System::class, 'system_address', 'system_address');
     }
 }

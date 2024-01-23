@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -53,6 +53,8 @@ class Commodity extends Model
 
     protected $table = "commodities";
 
+    protected $primaryKey = 'market_id';
+
     protected $fillable = [
         'market_id',
         'name',
@@ -63,11 +65,11 @@ class Commodity extends Model
     ];
 
     protected $hidden = [
-        //'market_id',
+        'market_id',
         'id'
     ];
 
-    public function station() {
+    public function station(): BelongsTo {
         return $this->belongsTo(Station::class, 'market_id', 'market_id');
     }
 }

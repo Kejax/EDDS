@@ -20,8 +20,9 @@ class StationFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            'market_id' => rand(1, 5000000),
+            'market_id' => fake()->randomNumber(9, true),
             'name' => fake()->company(),
             'system_address' => rand(0, 1000000),
             'distance_from_star' => rand(0, 5000),
